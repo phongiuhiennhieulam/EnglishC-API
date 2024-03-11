@@ -1,4 +1,6 @@
 ﻿using EnglishCenter.Repository;
+using EnglishCenter.Request;
+using EnglishCenter.Validate;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,6 +50,30 @@ namespace EnglishCenter.Controllers
             }
             catch (Exception ex)
             {
+            }
+        }
+        [HttpPost("AddTest")]
+        public IActionResult AddTest(AddTestRequest request)
+        {
+            try
+            {
+                List<string> errors = new TestValidate().validateAddTest(request);
+                if (errors.Count == 0)
+                {
+                    testRepository.addTest(request);
+                    return Ok(errors);
+                }
+                else
+                {
+                    return BadRequest(errors);
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                List<string> errors = new List<string>();
+                errors.Add(ex.Message);
+                return BadRequest(errors);
             }
         }
     }

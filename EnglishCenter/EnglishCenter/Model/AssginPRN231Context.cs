@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace EnglishCenter.Model
 {
-    public partial class AssginPRN231Context : DbContext
+    public partial class assginPRN231Context : DbContext
     {
-        public AssginPRN231Context()
+        public assginPRN231Context()
         {
         }
 
-        public AssginPRN231Context(DbContextOptions<AssginPRN231Context> options)
+        public assginPRN231Context(DbContextOptions<assginPRN231Context> options)
             : base(options)
         {
         }
@@ -23,7 +23,6 @@ namespace EnglishCenter.Model
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Subject> Subjects { get; set; } = null!;
         public virtual DbSet<Test> Tests { get; set; } = null!;
-        public virtual DbSet<TestQuestion> TestQuestions { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -31,7 +30,7 @@ namespace EnglishCenter.Model
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=AssginPRN231;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=localhost;Database=assginPRN231;Trusted_Connection=True;");
             }
         }
 
@@ -173,27 +172,23 @@ namespace EnglishCenter.Model
                     .WithMany(p => p.Tests)
                     .HasForeignKey(d => d.SubjectId)
                     .HasConstraintName("FK_Test_Subject");
-            });
 
-            modelBuilder.Entity<TestQuestion>(entity =>
-            {
-                entity.HasNoKey();
+                entity.HasMany(d => d.Questions)
+                    .WithMany(p => p.Tests)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "TestQuestion",
+                        l => l.HasOne<Question>().WithMany().HasForeignKey("QuestionId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Test_Ques__quest__5FB337D6"),
+                        r => r.HasOne<Test>().WithMany().HasForeignKey("TestId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Test_Ques__testI__5EBF139D"),
+                        j =>
+                        {
+                            j.HasKey("TestId", "QuestionId");
 
-                entity.ToTable("Test_Question");
+                            j.ToTable("Test_Question");
 
-                entity.Property(e => e.QuestionId).HasColumnName("questionId");
+                            j.IndexerProperty<int>("TestId").HasColumnName("testId");
 
-                entity.Property(e => e.TestId).HasColumnName("testId");
-
-                entity.HasOne(d => d.Question)
-                    .WithMany()
-                    .HasForeignKey(d => d.QuestionId)
-                    .HasConstraintName("FK__Test_Ques__quest__5FB337D6");
-
-                entity.HasOne(d => d.Test)
-                    .WithMany()
-                    .HasForeignKey(d => d.TestId)
-                    .HasConstraintName("FK__Test_Ques__testI__5EBF139D");
+                            j.IndexerProperty<int>("QuestionId").HasColumnName("questionId");
+                        });
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -201,7 +196,7 @@ namespace EnglishCenter.Model
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Address)
-                    .HasMaxLength(100)
+                    .HasMaxLength(50)
                     .HasColumnName("address");
 
                 entity.Property(e => e.Email)

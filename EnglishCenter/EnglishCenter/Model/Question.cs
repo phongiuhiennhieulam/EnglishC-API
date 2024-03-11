@@ -9,6 +9,7 @@ namespace EnglishCenter.Model
         {
             Answers = new HashSet<Answer>();
             Reviews = new HashSet<Review>();
+            Tests = new HashSet<Test>();
         }
 
         public int Id { get; set; }
@@ -17,5 +18,7 @@ namespace EnglishCenter.Model
 
         public virtual ICollection<Answer> Answers { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
+
+        public virtual ICollection<Test> Tests { get; set; }
     }
 }

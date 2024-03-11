@@ -7,8 +7,8 @@ namespace EnglishCenter.Repository
 {
     public class QuestionRepository : IQuestionRepository
     {
-        private readonly AssginPRN231Context _context;
-        public QuestionRepository(AssginPRN231Context context)
+        private readonly assginPRN231Context _context;
+        public QuestionRepository(assginPRN231Context context)
         {
             _context = context;
 

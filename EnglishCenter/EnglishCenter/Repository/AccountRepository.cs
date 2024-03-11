@@ -9,8 +9,8 @@ namespace EnglishCenter.Repository
 {
     public class AccountRepository : IAccountRepository
     {
-        private readonly AssginPRN231Context _context;
-        public AccountRepository(AssginPRN231Context context)
+        private readonly assginPRN231Context _context;
+        public AccountRepository(assginPRN231Context context)
         {
             _context = context;
 

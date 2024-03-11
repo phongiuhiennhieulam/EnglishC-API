@@ -1,5 +1,6 @@
 ﻿using EnglishCenter.DTO;
 using EnglishCenter.Model;
+using EnglishCenter.Request;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
@@ -7,8 +8,8 @@ namespace EnglishCenter.Repository
 {
     public class TestRepository : ITestRepository
     {
-        private readonly AssginPRN231Context _context;
-        public TestRepository(AssginPRN231Context context)
+        private readonly assginPRN231Context _context;
+        public TestRepository(assginPRN231Context context)
         {
             _context = context;
 
@@ -55,18 +56,18 @@ namespace EnglishCenter.Repository
                     date = test.CreateDate,
                     status = test.Status
                 };
-                var questions = _context.TestQuestions.Include(x => x.Question).Where(x => x.TestId == test.Id).ToList();
+                var questions = _context.Tests.Include(x => x.Questions).Where(x => x.Id == test.Id).SingleOrDefault().Questions;
                 List<ShowQuestionDTO> listQuestion = new List<ShowQuestionDTO>();
                 foreach(var question in questions)
                 {
                     ShowQuestionDTO showDTO = new ShowQuestionDTO()
                     {
-                        QuestionContent = question.Question.QuestionContent,
-                        id = (int)question.QuestionId,
+                        QuestionContent = question.QuestionContent,
+                        id = (int)question.Id,
 
 
                     };
-                    var answers = _context.Answers.Where(x => x.QuestId == question.QuestionId).ToList();
+                    var answers = _context.Answers.Where(x => x.QuestId == question.Id).ToList();
                     List<AnswerDTO> list = new List<AnswerDTO>();
                     foreach(var answer in answers)
                     {
@@ -108,6 +109,41 @@ namespace EnglishCenter.Repository
             catch (Exception ex)
             {
                 
+            }
+        }
+        public void addTest(AddTestRequest request)
+        {
+            try
+            {
+
+                Test t = new Test();
+                t.Title = request.name;
+                t.CreateDate = DateTime.Now;
+                t.Status = true;
+                t.Time = request.time;
+                _context.Tests.Add(t);
+                _context.SaveChanges();
+                ICollection<Question> listQ = t.Questions;
+                foreach (var id in request.listQuestion)
+                {
+                    
+                    var question = _context.Questions.SingleOrDefault(x => x.Id == id);
+                    ICollection<Test> listT = question.Tests;
+                    listT.Add(t);
+                    question.Tests = listT;
+                    
+                    listQ.Add(question);
+                    
+                }
+                t.Questions = listQ;
+                _context.SaveChanges();
+
+
+
+            }
+            catch (Exception ex)
+            {
+
             }
         }
     }

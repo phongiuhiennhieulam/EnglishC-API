@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
-builder.Services.AddDbContext<AssginPRN231Context>(options => options.UseSqlServer(
+builder.Services.AddDbContext<assginPRN231Context>(options => options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection")
             ));
 builder.Services.AddSwaggerGen(options =>

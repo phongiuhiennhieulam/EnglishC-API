@@ -1,4 +1,5 @@
 ﻿using EnglishCenter.DTO;
+using EnglishCenter.Request;
 
 namespace EnglishCenter.Repository
 {
@@ -9,5 +10,6 @@ namespace EnglishCenter.Repository
         ShowTestDTO getDetailTest(int id);
 
         void actionTest(int id,bool? status);
+        void addTest(AddTestRequest request);
     }
 }

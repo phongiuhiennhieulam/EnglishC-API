@@ -7,5 +7,7 @@ namespace EnglishCenter.Repository
         List<ShowTestDTO> getAllTest();
 
         ShowTestDTO getDetailTest(int id);
+
+        void actionTest(int id,bool? status);
     }
 }

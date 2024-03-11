@@ -39,5 +39,16 @@ namespace EnglishCenter.Controllers
                 return BadRequest(null);
             }
         }
+        [HttpDelete("{id}/{status}")]
+        public void DeleteTest(int id, bool? status)
+        {
+            try
+            {
+                testRepository.actionTest(id,status);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
     }
 }

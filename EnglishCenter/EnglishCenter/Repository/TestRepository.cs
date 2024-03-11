@@ -92,5 +92,23 @@ namespace EnglishCenter.Repository
             }
             return null;
         }
+
+        public void actionTest(int id,bool? status)
+        {
+            try
+            {
+
+                var test = _context.Tests.SingleOrDefault(x => x.Id == id);
+                test.Status = status;
+                _context.Tests.Update(test);
+                _context.SaveChanges();
+
+
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
     }
 }

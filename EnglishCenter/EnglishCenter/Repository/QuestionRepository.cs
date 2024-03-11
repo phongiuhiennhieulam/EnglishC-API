@@ -1,5 +1,6 @@
 ﻿using EnglishCenter.DTO;
 using EnglishCenter.Model;
+using EnglishCenter.Request;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnglishCenter.Repository
@@ -55,12 +56,39 @@ namespace EnglishCenter.Repository
            
             try
             {
-
                 var question = _context.Questions.Where(x => x.Id == id).FirstOrDefault();
                 var answer = _context.Answers.Where(x => x.QuestId == id).ToList();
                 _context.Answers.RemoveRange(answer);
                 _context.Questions.Remove(question);
                 _context.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void addQuestion(AddQuestionRequest request)
+        {
+
+            try
+            {
+                Question question = new Question();
+                question.Status = true;
+                question.QuestionContent = request.questionContent;
+                _context.Questions.Add(question);
+                _context.SaveChanges();
+                foreach(var item in request.list)
+                {
+                    Answer answer = new Answer()
+                    {
+                        AnsContent = item.answerContent,
+                        IsTrue = item.isTrue,
+                        QuestId = question.Id
+                    };
+                    _context.Answers.Add(answer);
+                    _context.SaveChanges();
+                }
 
             }
             catch (Exception ex)

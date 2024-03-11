@@ -1,4 +1,5 @@
 ﻿using EnglishCenter.Repository;
+using EnglishCenter.Request;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,19 @@ namespace EnglishCenter.Controllers
             try
             {
                 questionRepository.deleteQuestion(id);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        [HttpPost]
+        public void AddQuestion([FromBody] AddQuestionRequest request)
+        {
+            try
+            {
+                questionRepository.addQuestion(request);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using EnglishCenter.DTO;
+using EnglishCenter.Request;
 
 namespace EnglishCenter.Repository
 {
@@ -7,5 +8,7 @@ namespace EnglishCenter.Repository
         List<ShowQuestionDTO> getAllQuestion();
 
         void deleteQuestion(int id);
+
+        void addQuestion(AddQuestionRequest request);
     }
 }

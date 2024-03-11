@@ -1,5 +1,6 @@
 ﻿using EnglishCenter.Repository;
 using EnglishCenter.Request;
+using EnglishCenter.Validate;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,15 +44,67 @@ namespace EnglishCenter.Controllers
         }
 
         [HttpPost]
-        public void AddQuestion([FromBody] AddQuestionRequest request)
+        public IActionResult AddQuestion([FromBody] AddQuestionRequest request)
         {
             try
             {
-                questionRepository.addQuestion(request);
+                List<string> error = new QuestionValidate().validateAddQuestion(request);
+                if (error.Count == 0) {
+                    questionRepository.addQuestion(request);
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(error);
+                }
+                
             }
             catch (Exception ex)
             {
+                List<string> errors = new List<string>();
+                errors.Add(ex.Message);
+                return BadRequest(errors);
+            }
+        }
+        [HttpPut]
+        public IActionResult UpdateQuestion([FromBody] UpdateQuestionRequest request)
+        {
+            try
+            {
+                List<string> error = new QuestionValidate().validateUpdateQuestion(request);
+                if (error.Count == 0)
+                {
+                    questionRepository.updateQuestion(request);
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(error);
+                }
 
+            }
+            catch (Exception ex)
+            {
+                List<string> errors = new List<string>();
+                errors.Add(ex.Message);
+                return BadRequest(errors);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult ShowQuestion(int id)
+        {
+            try
+            {
+
+                    
+                    return Ok(questionRepository.showQuestion(id));
+
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

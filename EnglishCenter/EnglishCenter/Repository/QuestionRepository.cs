@@ -96,5 +96,67 @@ namespace EnglishCenter.Repository
 
             }
         }
+        public void updateQuestion(UpdateQuestionRequest request)
+        {
+
+            try
+            {
+                var question = _context.Questions.SingleOrDefault(x => x.Id == request.questionID);
+                var answers = _context.Answers.Where(x => x.QuestId.Equals(request.questionID)).ToList();
+                _context.Answers.RemoveRange(answers);
+                _context.SaveChanges();
+                question.QuestionContent = request.questionContent;
+                foreach (var item in request.answerQuestions)
+                {
+                    
+                        Answer answer = new Answer()
+                        {
+                            QuestId = question.Id,
+                            AnsContent = item.answerContent,
+                            IsTrue = item.isTrue,
+                        };
+                        _context.Answers.Add(answer);
+                }
+                _context.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public ShowQuestionDTO showQuestion(int id)
+        {
+
+            try
+            {
+                var question = _context.Questions.SingleOrDefault(x => x.Id == id);
+                var answers = _context.Answers.Where(x => x.QuestId == id).ToList();
+                List<AnswerDTO> list = new List<AnswerDTO>();
+                foreach (var item in answers)
+                {
+
+                    AnswerDTO answer = new AnswerDTO()
+                    {
+                        content = item.AnsContent,
+                        isTrue = item.IsTrue,
+                        id = item.Id
+                    };
+                    list.Add(answer);
+                }
+                return new ShowQuestionDTO()
+                {
+                    Answers = list,
+                    QuestionContent = question.QuestionContent,
+                    id = id
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return null;
+        }
     }
 }

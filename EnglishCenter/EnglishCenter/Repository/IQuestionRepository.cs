@@ -10,5 +10,8 @@ namespace EnglishCenter.Repository
         void deleteQuestion(int id);
 
         void addQuestion(AddQuestionRequest request);
+        void updateQuestion(UpdateQuestionRequest request);
+
+        ShowQuestionDTO showQuestion(int id);
     }
 }

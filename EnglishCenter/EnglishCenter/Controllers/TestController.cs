@@ -26,5 +26,18 @@ namespace EnglishCenter.Controllers
                 return BadRequest(null);
             }
         }
+        [HttpGet("{id}")]
+        public IActionResult GetDetailTest(int id)
+        {
+            try
+            {
+                return Ok(testRepository.getDetailTest(id));
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(null);
+            }
+        }
     }
 }

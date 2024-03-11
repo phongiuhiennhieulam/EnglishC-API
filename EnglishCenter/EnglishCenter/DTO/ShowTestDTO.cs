@@ -11,5 +11,7 @@
         public int? time { get; set; }   
 
         public bool? status { get; set; }
+
+        public List<ShowQuestionDTO> questions { get; set; }
     }
 }

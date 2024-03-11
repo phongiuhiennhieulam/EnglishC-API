@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0a3UP7TbCqMrp4zZnOw/rOhM1DUKwc41fmC8NQ/d5u76DKvakOI/lPqt6sTzO9mG+OT4mHyoHp4od9IBm2PmhA==",
+  "dgSpecHash": "4c/RvShtGDDfMKPQ1atOpeVTBWM6fO/yygtMHPbwfJTxOXl+7ojq/Aj1aYK5TzHfo1ogmrDteJGr7f+QfBatcg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\SHD\\source\\repos\\EnglishCenter\\EnglishCenter\\EnglishCenter.csproj",
+  "projectFilePath": "C:\\Users\\SHD\\Desktop\\EnglishCenter\\EnglishC-API\\EnglishCenter\\EnglishCenter\\EnglishCenter.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\SHD\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\SHD\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

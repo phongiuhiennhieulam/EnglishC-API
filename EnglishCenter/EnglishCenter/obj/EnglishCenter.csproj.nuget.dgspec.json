@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\SHD\\source\\repos\\EnglishCenter\\EnglishCenter\\EnglishCenter.csproj": {}
+    "C:\\Users\\SHD\\Desktop\\EnglishCenter\\EnglishC-API\\EnglishCenter\\EnglishCenter\\EnglishCenter.csproj": {}
   },
   "projects": {
-    "C:\\Users\\SHD\\source\\repos\\EnglishCenter\\EnglishCenter\\EnglishCenter.csproj": {
+    "C:\\Users\\SHD\\Desktop\\EnglishCenter\\EnglishC-API\\EnglishCenter\\EnglishCenter\\EnglishCenter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\SHD\\source\\repos\\EnglishCenter\\EnglishCenter\\EnglishCenter.csproj",
+        "projectUniqueName": "C:\\Users\\SHD\\Desktop\\EnglishCenter\\EnglishC-API\\EnglishCenter\\EnglishCenter\\EnglishCenter.csproj",
         "projectName": "EnglishCenter",
-        "projectPath": "C:\\Users\\SHD\\source\\repos\\EnglishCenter\\EnglishCenter\\EnglishCenter.csproj",
+        "projectPath": "C:\\Users\\SHD\\Desktop\\EnglishCenter\\EnglishC-API\\EnglishCenter\\EnglishCenter\\EnglishCenter.csproj",
         "packagesPath": "C:\\Users\\SHD\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\SHD\\source\\repos\\EnglishCenter\\EnglishCenter\\obj\\",
+        "outputPath": "C:\\Users\\SHD\\Desktop\\EnglishCenter\\EnglishC-API\\EnglishCenter\\EnglishCenter\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\SHD\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -22,6 +22,7 @@ namespace EnglishCenter.Repository
                 foreach (var item in listQuestion)
                 {
                     ShowQuestionDTO questDTO = new ShowQuestionDTO();
+                    questDTO.id = item.Id;
                     questDTO.QuestionContent = item.QuestionContent;
                     List<AnswerDTO> listAnswerDTO = new List<AnswerDTO>();
                     var listAnswer = _context.Answers.Where(x => x.QuestId == item.Id).ToList();
@@ -48,6 +49,24 @@ namespace EnglishCenter.Repository
 
             }
             return listReturn;
+        }
+        public void deleteQuestion(int id)
+        {
+           
+            try
+            {
+
+                var question = _context.Questions.Where(x => x.Id == id).FirstOrDefault();
+                var answer = _context.Answers.Where(x => x.QuestId == id).ToList();
+                _context.Answers.RemoveRange(answer);
+                _context.Questions.Remove(question);
+                _context.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

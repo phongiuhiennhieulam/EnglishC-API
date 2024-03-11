@@ -28,5 +28,17 @@ namespace EnglishCenter.Controllers
                 return BadRequest(null);
             }
         }
+        [HttpDelete("{id}")]
+        public void DeleteQuestion(int id)
+        {
+            try
+            {
+                questionRepository.deleteQuestion(id);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EnglishCenter.Repository;
 using EnglishCenter.Request;
 using EnglishCenter.Validate;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace EnglishCenter.Controllers
             testRepository = _testRepository;
         }
         [HttpGet("ListTest")]
+        [Authorize(Roles = "Admin,Teacher,Student")]
         public IActionResult GetListTest()
         {
             try
@@ -29,6 +31,7 @@ namespace EnglishCenter.Controllers
             }
         }
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Teacher,Student")]
         public IActionResult GetDetailTest(int id)
         {
             try
@@ -42,6 +45,7 @@ namespace EnglishCenter.Controllers
             }
         }
         [HttpDelete("{id}/{status}")]
+        [Authorize(Roles = "Admin")]
         public void DeleteTest(int id, bool? status)
         {
             try
@@ -53,6 +57,7 @@ namespace EnglishCenter.Controllers
             }
         }
         [HttpPost("AddTest")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddTest(AddTestRequest request)
         {
             try
@@ -77,6 +82,7 @@ namespace EnglishCenter.Controllers
             }
         }
         [HttpGet("UpdateTest")]
+        [Authorize(Roles = "Admin")]
         public IActionResult UpdateTest(int id)
         {
             try
@@ -91,7 +97,24 @@ namespace EnglishCenter.Controllers
                 return BadRequest(errors);
             }
         }
+        [HttpGet("ListTestDone")]
+        [Authorize(Roles = "Student,Teacher")]
+        public IActionResult ListTestDone(int userID)
+        {
+            try
+            {
+                return Ok(testRepository.GetListDoneTest(userID));
+
+            }
+            catch (Exception ex)
+            {
+                List<string> errors = new List<string>();
+                errors.Add(ex.Message);
+                return BadRequest(errors);
+            }
+        }
         [HttpPost("UpdateTest")]
+        [Authorize(Roles = "Admin")]
         public IActionResult UpdateTest(UpdateTestRequest request)
         {
             try
@@ -115,7 +138,9 @@ namespace EnglishCenter.Controllers
                 return BadRequest(errors);
             }
         }
+        
         [HttpPost("MarkTest")]
+        [Authorize(Roles = "Teacher,Student")]
         public IActionResult MarkTest(MarkTestRequest request)
         {
             try
@@ -133,5 +158,6 @@ namespace EnglishCenter.Controllers
                 return BadRequest(errors);
             }
         }
+        
     }
 }

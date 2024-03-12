@@ -94,7 +94,7 @@ namespace EnglishCenter.Repository
         {
             try
             {
-                return _context.Users.SingleOrDefault(x => x.Email.Equals(email) && x.Password.Equals(password));
+                return _context.Users.Include(X => X.Role).SingleOrDefault(x => x.Email.Equals(email) && x.Password.Equals(password));
 
             }
             catch (Exception ex)

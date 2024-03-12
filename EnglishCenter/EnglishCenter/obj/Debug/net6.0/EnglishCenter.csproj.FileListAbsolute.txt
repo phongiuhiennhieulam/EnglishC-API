@@ -134,3 +134,5 @@ C:\Users\SHD\Desktop\EnglishCenter\EnglishC-API\EnglishCenter\EnglishCenter\obj\
 C:\Users\SHD\Desktop\EnglishCenter\EnglishC-API\EnglishCenter\EnglishCenter\obj\Debug\net6.0\EnglishCenter.csproj.CopyComplete
 C:\Users\SHD\Desktop\EnglishCenter\EnglishC-API\EnglishCenter\EnglishCenter\obj\Debug\net6.0\EnglishCenter.genruntimeconfig.cache
 C:\Users\SHD\Desktop\EnglishCenter\EnglishC-API\EnglishCenter\EnglishCenter\obj\Debug\net6.0\ref\EnglishCenter.dll
+C:\Users\SHD\Desktop\EnglishCenter\EnglishC-API\EnglishCenter\EnglishCenter\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\SHD\Desktop\EnglishCenter\EnglishC-API\EnglishCenter\EnglishCenter\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll

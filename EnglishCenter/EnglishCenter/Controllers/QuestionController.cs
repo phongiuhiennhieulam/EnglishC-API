@@ -1,6 +1,7 @@
 ﻿using EnglishCenter.Repository;
 using EnglishCenter.Request;
 using EnglishCenter.Validate;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace EnglishCenter.Controllers
         }
 
         [HttpGet("ShowListQuestion")]
+        [Authorize(Roles = "Admin")]
         public IActionResult ShowListQuestion()
         {
             try
@@ -31,6 +33,7 @@ namespace EnglishCenter.Controllers
             }
         }
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public void DeleteQuestion(int id)
         {
             try
@@ -44,6 +47,7 @@ namespace EnglishCenter.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddQuestion([FromBody] AddQuestionRequest request)
         {
             try
@@ -67,6 +71,7 @@ namespace EnglishCenter.Controllers
             }
         }
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public IActionResult UpdateQuestion([FromBody] UpdateQuestionRequest request)
         {
             try
@@ -92,6 +97,7 @@ namespace EnglishCenter.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult ShowQuestion(int id)
         {
             try

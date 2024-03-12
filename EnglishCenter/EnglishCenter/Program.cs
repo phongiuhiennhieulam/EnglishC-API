@@ -2,11 +2,17 @@ using EnglishCenter.Model;
 using EnglishCenter.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using EnglishCenter.Token;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var secretKey = builder.Configuration["Config:SecretKey"];
+var secretKeyEncrypt = Encoding.UTF8.GetBytes(secretKey);
 
 builder.Services.AddControllers().AddJsonOptions(option => option.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -20,10 +26,24 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<IManageToken, ManageToken>();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddDbContext<assginPRN231Context>(options => options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection")
             ));
+builder.Services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(option =>
+                {
+                    option.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(secretKeyEncrypt),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition(
@@ -69,7 +89,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("MyPolicy");
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

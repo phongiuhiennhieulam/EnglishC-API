@@ -385,5 +385,36 @@ namespace EnglishCenter.Repository
             }
             return null;
         }
+
+        public List<TestDoneDTO> GetListDoneTest(int id)
+        {
+            try
+            {
+                List<TestDoneDTO> list = new();
+                var mark = _context.Marks.Include(x => x.Test).Where(x => x.UserId == id).ToList();
+                foreach(var item in mark)
+                {
+                    TestDoneDTO dto = new TestDoneDTO()
+                    {
+                        testID = item.Test.Id,
+                        testName = item.Test.Title,
+                        mark = (float)item.Mark1,
+                        doingDate = item.CreateDate,
+                        time = item.Test.Time
+
+                    };
+                    list.Add(dto);
+                }
+                return list;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return null;
+        }
     }
 }

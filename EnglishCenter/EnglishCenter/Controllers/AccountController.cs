@@ -1,6 +1,7 @@
 ﻿using EnglishCenter.Repository;
 using EnglishCenter.Request;
 using EnglishCenter.Validate;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace EnglishCenter.Controllers
         }
 
         [HttpGet("ManageAccountAdmin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Get()
         {
             try
@@ -31,6 +33,7 @@ namespace EnglishCenter.Controllers
             }
         }
         [HttpGet("{email}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Profile(String email)
         {
             try
@@ -46,6 +49,7 @@ namespace EnglishCenter.Controllers
         }
 
         [HttpPut("ActionAccount")]
+        [Authorize(Roles = "Admin")]
         public void ActionAccount([FromBody] AccountManage request)
         {
             try
@@ -59,6 +63,7 @@ namespace EnglishCenter.Controllers
         }
 
         [HttpPost("AddAccount")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddAccount([FromBody] AddAccountRequest request)
         {
             
@@ -86,6 +91,7 @@ namespace EnglishCenter.Controllers
 
 
         [HttpPut("UpdateProfile")]
+        [Authorize(Roles = "Admin")]
         public IActionResult UpdateProfile([FromBody] UpdateProfileRequest request)
         {
 
@@ -112,6 +118,7 @@ namespace EnglishCenter.Controllers
         }
 
         [HttpPut("ChangePassword")]
+        [Authorize(Roles = "Admin")]
         public IActionResult ChangePassword([FromBody] ChangePasswordRequest request)
         {
 

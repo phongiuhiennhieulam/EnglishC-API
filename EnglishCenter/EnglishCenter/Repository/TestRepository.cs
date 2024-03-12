@@ -293,6 +293,7 @@ namespace EnglishCenter.Repository
                 foreach (var item in request.doQuestion)
                 {
                     var question = _context.Questions.SingleOrDefault(x => x.Id == item.questionID);
+        
                     List<AnswerDTO> listAnswer = GetCorrectAnswerOfQuestion(question.Id);
                     ReviewQuestionDTO review = new ReviewQuestionDTO();
 
@@ -301,17 +302,29 @@ namespace EnglishCenter.Repository
                     review.questionContent = question.QuestionContent;
                     bool check = true;
                     int count = 0;
-                    foreach(var answer in item.answerID)
+                    if (item.answerID == null)
                     {
-                        if (answer.isTrue == false)
+                        review.isTrue = false;
+                        review.mark = 0;
+                        check = false;
+                    }
+                    else
+                    {
+                        foreach (var answer in item.answerID)
                         {
-                            check = false;
-                        }
-                        else
-                        {
-                            count++;
+
+                            if (answer.isTrue == false)
+                            {
+                                check = false;
+                            }
+                            else
+                            {
+                                count++;
+                            }
+
                         }
                     }
+                    
                     if(check == true && count == listAnswer.Count)
                     {
                         totalMark += ((float)10 / totalQuestion);
@@ -331,16 +344,29 @@ namespace EnglishCenter.Repository
                 _context.SaveChanges();
                 foreach(var rv in request.doQuestion)
                 {
-                   foreach(var an in rv.answerID)
+                    if(rv.answerID == null)
                     {
                         _context.Reviews.Add(new Review()
                         {
                             QuestionId = rv.questionID,
-                            AnswerId = an.id,
                             MarkId = newMark.Id
                         });
                         _context.SaveChanges();
                     }
+                    else
+                    {
+                        foreach (var an in rv.answerID)
+                        {
+                            _context.Reviews.Add(new Review()
+                            {
+                                QuestionId = rv.questionID,
+                                AnswerId = an.id,
+                                MarkId = newMark.Id
+                            });
+                            _context.SaveChanges();
+                        }
+                    }
+                  
                 }
                 dto.testID = newMark.TestId;
                 dto.testName = newMark.Test.Title;

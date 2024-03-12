@@ -76,5 +76,44 @@ namespace EnglishCenter.Controllers
                 return BadRequest(errors);
             }
         }
+        [HttpGet("UpdateTest")]
+        public IActionResult UpdateTest(int id)
+        {
+            try
+            {
+                return Ok(testRepository.GetUpdateTest(id));
+
+            }
+            catch (Exception ex)
+            {
+                List<string> errors = new List<string>();
+                errors.Add(ex.Message);
+                return BadRequest(errors);
+            }
+        }
+        [HttpPost("UpdateTest")]
+        public IActionResult UpdateTest(UpdateTestRequest request)
+        {
+            try
+            {
+                List<string> errors = new TestValidate().validateUpdateTest(request);
+                if (errors.Count == 0)
+                {
+                    testRepository.updateTest(request);
+                    return Ok(errors);
+                }
+                else
+                {
+                    return BadRequest(errors);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                List<string> errors = new List<string>();
+                errors.Add(ex.Message);
+                return BadRequest(errors);
+            }
+        }
     }
 }

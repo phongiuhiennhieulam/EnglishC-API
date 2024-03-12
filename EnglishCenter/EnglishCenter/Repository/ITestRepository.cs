@@ -11,5 +11,9 @@ namespace EnglishCenter.Repository
 
         void actionTest(int id,bool? status);
         void addTest(AddTestRequest request);
+
+        ShowTestUpdateDTO GetUpdateTest(int id);
+
+        void updateTest(UpdateTestRequest request);
     }
 }

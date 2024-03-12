@@ -2,6 +2,7 @@
 using EnglishCenter.Model;
 using EnglishCenter.Request;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace EnglishCenter.Repository
@@ -64,22 +65,10 @@ namespace EnglishCenter.Repository
                     {
                         QuestionContent = question.QuestionContent,
                         id = (int)question.Id,
-
+                        Answers = GetAnswerOfQuestion(question.Id)
 
                     };
-                    var answers = _context.Answers.Where(x => x.QuestId == question.Id).ToList();
-                    List<AnswerDTO> list = new List<AnswerDTO>();
-                    foreach(var answer in answers)
-                    {
-                        AnswerDTO an = new AnswerDTO()
-                        {
-                            content = answer.AnsContent,
-                            id = answer.Id,
-                            isTrue = answer.IsTrue
-                        };
-                        list.Add(an);
-                    }
-                    showDTO.Answers = list;
+                    
                     listQuestion.Add(showDTO);
                 }
                 dto.questions = listQuestion;
@@ -136,6 +125,120 @@ namespace EnglishCenter.Repository
                     
                 }
                 t.Questions = listQ;
+                _context.SaveChanges();
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public List<AnswerDTO> GetAnswerOfQuestion(int questID)
+        {
+            List<AnswerDTO> listAnswerDTO = new List<AnswerDTO>();
+            var listAnswer = _context.Answers.Where(x => x.QuestId == questID).ToList();
+
+            foreach (var answer in listAnswer)
+            {
+                AnswerDTO dtoAnswer = new AnswerDTO()
+                {
+                    id = answer.Id,
+                    content = answer.AnsContent,
+                    isTrue = answer.IsTrue
+                };
+                listAnswerDTO.Add(dtoAnswer);
+
+
+            }
+            return listAnswerDTO;
+        }
+        public ShowTestUpdateDTO GetUpdateTest(int id)
+        {
+            try
+            {
+                var question = _context.Questions.ToList();
+                var questionTest = _context.Tests.Include(x => x.Questions).SingleOrDefault(x => x.Id == id).Questions;
+
+                List<ShowQuestionDTO> questionInTest = new List<ShowQuestionDTO>();
+                foreach (var item in questionTest)
+                {
+                    questionInTest.Add(new ShowQuestionDTO()
+                    {
+                        id = item.Id,
+                        QuestionContent = item.QuestionContent,
+                        Answers = GetAnswerOfQuestion(item.Id)
+                    });
+                }
+                List<ShowQuestionDTO> questionOutTest = new List<ShowQuestionDTO>();
+                var test = _context.Tests.SingleOrDefault(x => x.Id == id);
+                foreach(var q in question)
+                {
+                    bool check = true;
+                    foreach(var i in questionTest)
+                    {
+                        if(q.Id == i.Id)
+                        {
+                            check = false;
+                        }
+                    }
+                    if (check)
+                    {
+                        var item = _context.Questions.SingleOrDefault(x => x.Id == q.Id);
+                        ShowQuestionDTO dto = new ShowQuestionDTO()
+                        {
+                            id = item.Id,
+                            QuestionContent = item.QuestionContent,
+                            Answers = GetAnswerOfQuestion(item.Id)
+                        };
+                        
+                        questionOutTest.Add(dto);
+                    }
+                }
+                return new ShowTestUpdateDTO()
+                {
+                    id = id,
+                    name = test.Title,
+                    time = test.Time,
+                    status = test.Status,
+                    questionInTest = questionInTest,
+                    questionOutTest = questionOutTest
+
+                };
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return null;
+        }
+        public void updateTest(UpdateTestRequest request)
+        {
+            try
+            {
+                List<Question> list = new List<Question>();
+
+                var t = _context.Tests.Include(x => x.Questions).SingleOrDefault(x => x.Id == request.id);
+                t.Title = request.name;
+                t.Time = request.time;
+                t.Questions.Clear();
+                _context.Tests.Update(t);
+                _context.SaveChanges();
+                foreach (var id in request.listQuestion)
+                {
+
+                    var question = _context.Questions.SingleOrDefault(x => x.Id == id);
+                    list.Add(question);
+
+                }
+                t.Questions = list;
+                _context.Tests.Update(t);
                 _context.SaveChanges();
 
 

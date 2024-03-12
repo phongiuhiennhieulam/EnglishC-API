@@ -136,6 +136,29 @@ namespace EnglishCenter.Repository
             }
         }
 
+        public List<AnswerDTO> GetCorrectAnswerOfQuestion(int questID)
+        {
+            List<AnswerDTO> listAnswerDTO = new List<AnswerDTO>();
+            var listAnswer = _context.Answers.Where(x => x.QuestId == questID).ToList();
+
+            foreach (var answer in listAnswer)
+            {
+                if (answer.IsTrue == true)
+                {
+                    AnswerDTO dtoAnswer = new AnswerDTO()
+                    {
+                        id = answer.Id,
+                        content = answer.AnsContent,
+                        isTrue = answer.IsTrue
+                    };
+                    listAnswerDTO.Add(dtoAnswer);
+                }
+                
+
+
+            }
+            return listAnswerDTO;
+        }
         public List<AnswerDTO> GetAnswerOfQuestion(int questID)
         {
             List<AnswerDTO> listAnswerDTO = new List<AnswerDTO>();
@@ -248,6 +271,93 @@ namespace EnglishCenter.Repository
             {
 
             }
+        }
+        public ReviewTestDTO markTest(MarkTestRequest request)
+        {
+            try
+            {
+                Mark m = new Mark();
+                m.TestId = request.testID;
+                m.UserId = request.userID;
+                m.CreateDate = DateTime.Now;
+                _context.Marks.Add(m);
+                _context.SaveChanges();
+
+
+                ReviewTestDTO dto = new ReviewTestDTO();
+                List<ReviewQuestionDTO> listQuestion = new List<ReviewQuestionDTO>();
+
+                float totalMark = 0;
+                int totalQuestion = request.doQuestion.Count;
+                int totalTrue = 0;
+                foreach (var item in request.doQuestion)
+                {
+                    var question = _context.Questions.SingleOrDefault(x => x.Id == item.questionID);
+                    List<AnswerDTO> listAnswer = GetCorrectAnswerOfQuestion(question.Id);
+                    ReviewQuestionDTO review = new ReviewQuestionDTO();
+
+                    review.listAnswer = listAnswer;
+                    review.listChoosen = item.answerID;
+                    review.questionContent = question.QuestionContent;
+                    bool check = true;
+                    int count = 0;
+                    foreach(var answer in item.answerID)
+                    {
+                        if (answer.isTrue == false)
+                        {
+                            check = false;
+                        }
+                        else
+                        {
+                            count++;
+                        }
+                    }
+                    if(check == true && count == listAnswer.Count)
+                    {
+                        totalMark += ((float)10 / totalQuestion);
+                        review.isTrue = true;
+                        review.mark =((float)10 / totalQuestion);
+                    }
+                    else
+                    {
+                        review.isTrue = false;
+                        review.mark = 0;
+                    }
+                    listQuestion.Add(review);
+                }
+                Mark newMark = _context.Marks.Include(X => X.Test).SingleOrDefault(x => x.Id == m.Id);
+                newMark.Mark1 = totalMark;
+                _context.Marks.Update(newMark);
+                _context.SaveChanges();
+                foreach(var rv in request.doQuestion)
+                {
+                   foreach(var an in rv.answerID)
+                    {
+                        _context.Reviews.Add(new Review()
+                        {
+                            QuestionId = rv.questionID,
+                            AnswerId = an.id,
+                            MarkId = newMark.Id
+                        });
+                        _context.SaveChanges();
+                    }
+                }
+                dto.testID = newMark.TestId;
+                dto.testName = newMark.Test.Title;
+                dto.totalMark = totalMark;
+                dto.time = newMark.Test.Time;
+                dto.doingTestDate = newMark.CreateDate;
+                dto.reviews = listQuestion;
+                return dto;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return null;
         }
     }
 }

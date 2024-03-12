@@ -15,5 +15,7 @@ namespace EnglishCenter.Repository
         ShowTestUpdateDTO GetUpdateTest(int id);
 
         void updateTest(UpdateTestRequest request);
+
+        ReviewTestDTO markTest(MarkTestRequest request);
     }
 }

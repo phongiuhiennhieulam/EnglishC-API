@@ -115,5 +115,23 @@ namespace EnglishCenter.Controllers
                 return BadRequest(errors);
             }
         }
+        [HttpPost("MarkTest")]
+        public IActionResult MarkTest(MarkTestRequest request)
+        {
+            try
+            {
+
+                    
+                    return Ok(testRepository.markTest(request));
+               
+
+            }
+            catch (Exception ex)
+            {
+                List<string> errors = new List<string>();
+                errors.Add(ex.Message);
+                return BadRequest(errors);
+            }
+        }
     }
 }

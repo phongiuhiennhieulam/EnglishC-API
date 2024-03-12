@@ -286,7 +286,7 @@ namespace EnglishCenter.Repository
 
                 ReviewTestDTO dto = new ReviewTestDTO();
                 List<ReviewQuestionDTO> listQuestion = new List<ReviewQuestionDTO>();
-
+                
                 float totalMark = 0;
                 int totalQuestion = request.doQuestion.Count;
                 int totalTrue = 0;
@@ -296,9 +296,10 @@ namespace EnglishCenter.Repository
         
                     List<AnswerDTO> listAnswer = GetCorrectAnswerOfQuestion(question.Id);
                     ReviewQuestionDTO review = new ReviewQuestionDTO();
-
+                    List<AnswerDTO> listAllAnswer = GetAnswerOfQuestion(question.Id);
                     review.listAnswer = listAnswer;
                     review.listChoosen = item.answerID;
+                    review.listAllAnswer = listAllAnswer;
                     review.questionContent = question.QuestionContent;
                     bool check = true;
                     int count = 0;

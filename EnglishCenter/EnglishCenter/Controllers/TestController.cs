@@ -140,7 +140,7 @@ namespace EnglishCenter.Controllers
         }
         
         [HttpPost("MarkTest")]
-        [Authorize(Roles = "Teacher,Student")]
+        //[Authorize(Roles = "Teacher,Student")]
         public IActionResult MarkTest(MarkTestRequest request)
         {
             try

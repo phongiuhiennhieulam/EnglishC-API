@@ -6,7 +6,9 @@
 
         public List<AnswerDTO>? listChoosen { get; set; }
 
-        public List<AnswerDTO>? listAnswer { get; set; }  
+        public List<AnswerDTO>? listAnswer { get; set; }
+
+        public List<AnswerDTO>? listAllAnswer { get; set; }
 
         public bool isTrue { get; set; }
 
